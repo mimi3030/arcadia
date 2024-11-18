@@ -1,0 +1,105 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator zod {
+  provider = "zod-prisma-types"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum RoleEnum {
+  Veterinaire
+  Employee
+}
+
+model Utilisateur {
+  id        Int          @id @default(autoincrement())
+  uid       String       @unique
+  nom       String
+  prenom    String
+  role      RoleEnum
+  Rapport   Rapport[]
+  Nouriture Nourriture[]
+}
+
+model Service {
+  id          Int    @id @default(autoincrement())
+  nom         String
+  description String
+}
+
+enum EtatAnimal {
+  BonneSante
+  SousObservation
+  EnSoins
+  EnQuarantaine
+  Repos
+}
+
+model Habitat {
+  id          Int      @id @default(autoincrement())
+  nom         String
+  description String
+  animaux     Animal[] @relation("HabitatAnimal")
+  images      String[]
+  avis        Avis[]   @relation("HabitatAvis")
+}
+
+model Race {
+  id     Int      @id @default(autoincrement())
+  label  String
+  Animal Animal[]
+}
+
+model Animal {
+  id          Int          @id @default(autoincrement())
+  prenom      String
+  raceId      Int
+  race        Race         @relation(fields: [raceId], references: [id])
+  images      String[]
+  habitatId   Int
+  habitat     Habitat      @relation("HabitatAnimal", fields: [habitatId], references: [id])
+  rapports    Rapport[]    @relation("AnimalRapport")
+  nourritures Nourriture[] @relation("AnimalNourriture")
+}
+
+model Rapport {
+  id            Int         @id @default(autoincrement())
+  etat          EtatAnimal
+  date          DateTime
+  detail        String?
+  animal        Animal      @relation("AnimalRapport", fields: [animalId], references: [id])
+  animalId      Int
+  veterinaire   Utilisateur @relation(fields: [veterinaireId], references: [id])
+  veterinaireId Int
+}
+
+model Nourriture {
+  id        Int         @id @default(autoincrement())
+  label     String
+  grammage  Int
+  date      DateTime
+  employe   Utilisateur @relation(fields: [employeId], references: [id])
+  employeId Int
+  animal    Animal      @relation("AnimalNourriture", fields: [animalId], references: [id])
+  animalId  Int
+}
+
+model Avis {
+  id          Int     @id @default(autoincrement())
+  pseudo      String
+  commentaire String
+  isVisible   Boolean
+  habitat     Habitat @relation("HabitatAvis", fields: [habitatId], references: [id])
+  habitatId   Int
+}
