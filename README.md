@@ -1,36 +1,24 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Comment déployer ce projet en local avec la base de données déployée sur neon.tech
 
-## Getting Started
+1. Avoir Node.js installé sur votre machine
+2. Avoir npm installé sur votre machine
+3. Cloner le projet sur votre machine
+4. Installer les dépendances avec la commande `npm install`
+5. Récuperer le fichier `.env` et le placer à la racine du projet
+6. Lancer la commande `npx prisma generate` pour générer les fichiers nécessaires à l'ORM
+7. Lancer le serveur de développement avec la commande `npm run dev`
+8. Le serveur est accessible à l'adresse `http://localhost:3000`
 
-First, run the development server:
+# Comment déployer ce projet en local avec la base de données locale
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Avoir Node.js installé sur votre machine
+2. Avoir npm installé sur votre machine
+3. Cloner le projet sur votre machine
+4. Installer les dépendances avec la commande `npm install`
+5. Récuperer le fichier `.env` et le placer à la racine du projet
+6. Modifier le fichier `.env` pour utiliser une base de données locale (DATABASE_URL=postgresql://[user]:[password]@[host]:[port]/[database])
+7. Lancer la commande `npx prisma generate` pour générer les fichiers nécessaires à l'ORM
+8. Lancer la commande `npm run update-db` pour créer les tables dans la base de données
+9. Lancer le serveur de développement avec la commande `npm run dev`
+10. Le serveur est accessible à l'adresse `http://localhost:3000`
+11. Pour autogenerer des données dans la base de données, rendez-vous sur la page `http://localhost:3000/api/seed`
